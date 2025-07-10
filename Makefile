@@ -18,7 +18,7 @@ LIB_SHARED := libfib.so
 
 .PHONY: all clean
 
-all: $(LIB_STATIC) $(LIB_SHARED) $(TARGET)
+all: $(LIB_STATIC) $(TARGET)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -30,16 +30,16 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
 $(LIB_STATIC): $(BUILD_DIR)/fib.o
 	ar rcs $@ $^
 
-# Shared library
+# Shared library (not needed for our main program)
 $(LIB_SHARED): $(BUILD_DIR)/fib.o
 	$(CXX) -shared -o $@ $^
 
-# Main program
+# Main program - link statically
 $(TARGET): $(BUILD_DIR)/main.o $(LIB_STATIC)
-	$(CXX) $(CXXFLAGS) -o $@ $< $(LDFLAGS) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $< -L. -l:libfib.a
 
 clean:
 	rm -rf $(BUILD_DIR) $(TARGET) $(LIB_STATIC) $(LIB_SHARED)
 
 run: $(TARGET)
-	./$(TARGET)
+	LD_LIBRARY_PATH=. ./$(TARGET)

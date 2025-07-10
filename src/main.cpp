@@ -13,12 +13,12 @@ void profileFunction(int (*func)(int), int n, const std::string& name) {
 }
 
 int main() {
-    int n = 40; // Large enough to show performance differences
+    int n = 35; // Large enough to show performance differences
     
-    profileFunction(fib::solve1, n, "Recursive");
-    profileFunction(fib::solve2, n, "Memoization");
-    profileFunction(fib::solve3, n, "Iterative");
     profileFunction(fib::solve4, n, "Matrix");
+    profileFunction(fib::solve3, n, "Iterative");
+    profileFunction(fib::solve2, n, "Memoization");
+    profileFunction(fib::solve1, n, "Recursive");
     
     return 0;
 }
